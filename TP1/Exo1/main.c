@@ -68,7 +68,7 @@ int main(){
 		// ==============================
 	
 		clock_t start_inc = clock();
-		int max_incrementale = recherche_max_incrementale(tab, 10);
+		int max_incrementale = recherche_max_incrementale(tab, n);
 		clock_t end_inc = clock();
 		printf("Le maximum par la methode incrementale est : %d \n",max_incrementale);
 
@@ -76,7 +76,7 @@ int main(){
 		// Test avec méthode diviser pour régner
 		// =====================================
 		clock_t start_dpr = clock();
-		int max_dpr = d_p_r(tab, 0, 9);
+		int max_dpr = d_p_r(tab, 0, n-1);
 		clock_t end_dpr = clock();
 		printf("Le maximum par la methode diviser pour regner est : %d \n",max_dpr);
 		
