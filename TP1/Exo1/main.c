@@ -1,12 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <limits.h>
 #include "recherche_max_divise_pour_regner.h"
 #include "recherche_max_incrementale.h"
 
 void generer_tableau_aleatoire(int tab[], int n) {
 	for (int i = 0 ; i < n ; i++) {
-		tab[i] = rand() % 1000 ;
+		tab[i] = rand() % 1000000000 ;
 	}
 }
 
@@ -41,7 +42,7 @@ int main(){
 	
 	printf("=== COMPARAISON DES ALGORITHMES DE RECHERCHE DU MAXIMUM ===\n\n");
 	
-	int size[] = {50, 100, 500, 1000, 10000, 50000, 100000, 500000, 1000000};
+	int size[] = {100000, 500000, 1000000, 5000000, 100000000, 500000000, 1000000000};
 	int nb_size = sizeof(size) / sizeof(size[0]);
 	
 	int i;
