@@ -46,7 +46,7 @@ int main(){
 	
 	printf("=== COMPARAISON DES ALGORITHMES DE TRI ===\n\n");
 	
-	int size[] = {5000, 10000, 20000, 50000, 100000, 500000, 1000000, 5000000, 1000000000};
+	int size[] = {100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000};
 	int nb_size = sizeof(size) / sizeof(size[0]);
 	
 	int i;
