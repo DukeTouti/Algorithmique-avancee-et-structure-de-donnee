@@ -1,11 +1,11 @@
-#ifndef TRI_INSERTION.H
-#define TRI_INSERTION.H
+#ifndef TRI_INSERTION_H
+#define TRI_INSERTION_H
 
 /**
- * Recherche linéaire naïve d'une valeur encadrée (pour comparaison)
- * @param tab tableau d'entiers
- * @param size taille du tableau tab
+ * Trie un tableau d'entiers par insertion
+ * @param tab Le tableau à trier
+ * @param n La taille du tableau
  */
-int[] tri_insertion(int[] tab, int size);
+void tri_insertion(int tab[], int n);
 
 #endif
