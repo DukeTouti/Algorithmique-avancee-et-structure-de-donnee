@@ -9,7 +9,7 @@ import numpy as np
 import sys
 import os
 
-def charger_donnees(nom_fichier='resultats_temps.csv'):
+def charger_donnees(nom_fichier='resultats_tri.csv'):
     """Charge les données depuis le fichier CSV"""
     if not os.path.exists(nom_fichier):
         print(f"❌ Erreur : Le fichier {nom_fichier} n'existe pas.")
