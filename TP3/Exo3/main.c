@@ -36,7 +36,7 @@ int main(){
 
 	srand(time(NULL));
 	
-	FILE *f = fopen("resultats_temps.csv", "w");
+	FILE *f = fopen("resultats_tri.csv", "w");
 	if (f == NULL) {
 		perror("Erreur lors de l'ouverture du fichier\n");
 		return 1;
