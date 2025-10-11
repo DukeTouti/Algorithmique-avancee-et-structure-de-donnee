@@ -2,27 +2,30 @@
 #define TRI_FUSION_H
 
 /**
- * Recherche récursive d'une valeur encadrée dans un tableau trié
- * @param tab tableau d'entiers
- * @param debut indice de debut
- * @param fin indice de fin
+ * Copie une portion d'un tableau dans un nouveau tableau alloué
+ * @param tab tableau d'entiers source
+ * @param debut indice de début (inclus)
+ * @param fin indice de fin (exclus)
+ * @return pointeur vers le nouveau tableau alloué
  */
-int *copier_tableau(int[] tab, int debut, int fin)
+int *copier_tableau(int tab[], int debut, int fin);
 
 /**
- * Recherche récursive d'une valeur encadrée dans un tableau trié
+ * Fusionne deux tableaux triés en un seul tableau trié
  * @param gauche tableau d'entiers trié par ordre croissant
  * @param size_gauche taille du tableau gauche
  * @param droite tableau d'entiers trié par ordre croissant
  * @param size_droite taille du tableau droite
+ * @return pointeur vers le nouveau tableau fusionné alloué
  */
-int fusionner(int[] gauche, int size_gauche, int[] droite, int size_droite);
+int *fusionner(int gauche[], int size_gauche, int droite[], int size_droite);
 
 /**
- * Recherche linéaire naïve d'une valeur encadrée (pour comparaison)
- * @param tab tableau d'entiers
+ * Trie un tableau d'entiers par l'algorithme de tri fusion
+ * ATTENTION : Cette fonction trie sur place et modifie le tableau original
+ * @param tab tableau d'entiers à trier
  * @param size taille du tableau tab
  */
-int[] tri_fusion(int[] tab, int size);
+void tri_fusion(int tab[], int size);
 
 #endif
