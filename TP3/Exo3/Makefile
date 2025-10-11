@@ -36,7 +36,7 @@ run: $(TARGET)
 	./$(TARGET)
 
 # Génération des graphiques
-graph: run
+graph:
 	python3 generer_graphiques.py
 
 # Déclaration des cibles qui ne sont pas des fichiers
