@@ -22,10 +22,10 @@ int *fusionner(int gauche[], int size_gauche, int droite[], int size_droite);
 
 /**
  * Trie un tableau d'entiers par l'algorithme de tri fusion
- * ATTENTION : Cette fonction trie sur place et modifie le tableau original
  * @param tab tableau d'entiers à trier
- * @param size taille du tableau tab
+ * @param debut indice de début (inclus)
+ * @param fin indice de fin (exclus)
  */
-void tri_fusion(int tab[], int size);
+void tri_fusion(int tab[], int debut, int fin);
 
 #endif
