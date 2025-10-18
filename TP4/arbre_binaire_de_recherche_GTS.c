@@ -1,17 +1,9 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-/* Utile: max(p, q) renvoie le maximum entre ces deux entiers */
-
 int max(int p, int q) {
   return (p > q) ? p : q;
 }
-
-/*
-   On définit un type pour les éléments et une fonction de comparaison
-   entre éléments
-*/
-typedef int element_t;
 
 int comparer(element_t a, element_t b){
   if (a < b) return 1;
@@ -22,20 +14,6 @@ int comparer(element_t a, element_t b){
 void affiche_element(element_t a) {
   printf("%2d ", a);
 }
-
-
-/*
-  Définition des arbres binaires. L'arbre vide est représenté par NULL.
-*/
-
-struct noeud_s {
-  element_t        e;
-  struct noeud_s * gauche;
-  struct noeud_s * droite;
-  struct noeud_s * parent;
-} ;
-
-typedef  struct noeud_s * ab_t;
 
 
 /* nouveau_noeud(a), crée (allocation mémoire) et renvoie un arbre à
