@@ -58,6 +58,30 @@ void construireTasMin(noeud x) {
 	}
 }
 
+void construireTasMaxInsertion(noeud x) {
+
+	for (int i = 1; i < x->taille; i++) {
+    
+		int j = i;
+		while (j > 0 && x->tab[parent(j)] < x->tab[j]) {
+			echangenoeud(x, j, parent(j));
+			j = parent(j);
+		}
+	}
+}
+
+void construireTasMinInsertion(noeud x) {
+
+	for (int i = 1 ; i < x->taille ; i++) {
+    
+		int j = i ;
+		while ((j > 0) && (x->tab[parent(j)] > x->tab[j])) {
+			echangenoeud(x, j, parent(j));
+			j = parent(j);
+		}
+	}
+}
+
 
 
 

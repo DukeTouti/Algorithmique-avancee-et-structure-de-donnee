@@ -16,4 +16,10 @@ void construireTasMax(noeud x);
 /* Fonction qui construit un tas min à partir du tas x */
 void construireTasMin(noeud x);
 
+/* Fonction qui construit un tas max par insertion (élément par élément) */
+void construireTasMaxInsertion(noeud x);
+
+/* Fonction qui construit un tas min par insertion (élément par élément) */
+void construireTasMinInsertion(noeud x);
+
 #endif
