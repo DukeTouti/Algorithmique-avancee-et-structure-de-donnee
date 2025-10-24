@@ -3,7 +3,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g -O2
 LDFLAGS = -lm
-TARGET = abr
+TARGET = main
 PYTHON = python3
 
 # Fichiers sources
@@ -15,11 +15,15 @@ OBJECTS = $(SOURCES:.c=.o)
 GREEN = \033[0;32m
 RED = \033[0;31m
 BLUE = \033[0;34m
+YELLOW = \033[0;33m
 NC = \033[0m # No Color
 
 # Règle par défaut
 all: $(TARGET)
 	@echo "$(GREEN)✓ Compilation réussie : $(TARGET)$(NC)"
+	@echo "$(YELLOW)Nettoyage des fichiers objets...$(NC)"
+	@rm -f $(OBJECTS)
+	@echo "$(GREEN)✓ Fichiers .o supprimés$(NC)"
 
 # Compilation de l'exécutable
 $(TARGET): $(OBJECTS)
@@ -32,7 +36,7 @@ $(TARGET): $(OBJECTS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Exécuter le programme
-run: $(TARGET)
+run: all
 	@echo "$(GREEN)=== Exécution du programme ===$(NC)"
 	./$(TARGET)
 
@@ -80,7 +84,7 @@ help:
 	@echo "$(BLUE)========================================$(NC)"
 	@echo "$(GREEN)Commandes disponibles :$(NC)"
 	@echo "$(BLUE)========================================$(NC)"
-	@echo "  $(GREEN)make$(NC)              - Compiler le projet"
+	@echo "  $(GREEN)make$(NC)              - Compiler le projet (sans laisser de .o)"
 	@echo "  $(GREEN)make run$(NC)          - Compiler et exécuter"
 	@echo "  $(GREEN)make graphiques$(NC)   - Générer les graphiques (nécessite resultats_abr.csv)"
 	@echo "  $(GREEN)make full$(NC)         - Tout : compiler, exécuter, graphiques"

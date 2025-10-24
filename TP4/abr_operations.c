@@ -45,7 +45,7 @@ void inserer(ab_t *pa, element_t e) {
 		
 		abr->parent = parent ;
 		
-		if () {
+		if (1 == cote) {
 			parent->gauche = abr;
 		} else {
 			parent->droit = abr;
@@ -61,9 +61,9 @@ ab_t rechercher(ab_t a, element_t e) {
 		if (cote == 0) {
 			return a;
 		} else if (cote == 1) {
-			abr = abr->gauche;
+			a = a->gauche;
 		} else {
-			abr = abr->droit;
+			a = a->droit;
 		}
 	}
 	
@@ -88,7 +88,7 @@ void supprimer(ab_t *pa, ab_t y) {
 	if (noeud->gauche) {
 		fils = noeud->gauche;
 	} else {
-		fils = noeud->droite;
+		fils = noeud->droit;
 	}
 	
 	if (fils) {
@@ -141,7 +141,7 @@ ab_t successeur(ab_t a) {
 		return NULL;
 	}
 	
-	while (a->droit) {
+	if (a->droit) {
 		return minimum(a->droit);
 	}
 	
@@ -159,7 +159,7 @@ ab_t predecesseur(ab_t a) {
 		return NULL;
 	}
 	
-	while (a->gauche) {
+	if (a->gauche) {
 		return maximum(a->gauche);
 	}
 	

@@ -5,13 +5,13 @@
 #include "abr_affichage.h"
 
 /* Affichage d'un element */
-void affiche_element(element_t e) '
-	printf("%2d ", a);
+void affiche_element(element_t e) {
+	printf("%2d ", e);
 }
 
 static void afficher_arbre_aux1(ab_t a) {
 	if (a->parent) {
-		afficher_arbre_aux1(x->parent);
+		afficher_arbre_aux1(a->parent);
 		
 		if (a == (a->parent)->droit) {
 			if ((a->parent)->gauche) {
