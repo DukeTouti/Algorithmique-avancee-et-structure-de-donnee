@@ -5,3 +5,5 @@ TP1 : Exercice 1 et Exercice 2 des exercices TP du premier chapitre : Méthodes 
 TP2 : (Bonus) Exercice 4 des exercices TD du premier chapitre : Méthodes de Conception et Calcul Asymptotique ;
 
 TP3 : Tri_Insertion et Tri_fusion : Méthodes de Conception et Calcul Asymptotique ;
+
+TP4 : Arbres Binaires de Recherches : Méthodes de Conception et Calcul Asymptotique ;
