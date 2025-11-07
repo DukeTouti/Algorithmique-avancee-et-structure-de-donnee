@@ -2,9 +2,9 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99 -g
 TARGET = main
-SOURCES = main.c tas_operations.c tas_utils.c
+SOURCES = main.c tas_operations.c tas_utils.c tri_fusion.c tri_insertion.c
 OBJECTS = $(SOURCES:.c=.o)
-HEADERS = tas_operations.h tas_utils.h
+HEADERS = tas_operations.h tas_utils.h tri_fusion.h tri_insertion.h
 
 # Règle par défaut
 all: $(TARGET)
@@ -25,7 +25,7 @@ clean:
 # Nettoyage complet (objets + exécutable + résultats)
 fclean: clean
 	rm -f $(TARGET)
-	rm -f resultats_tas.csv
+	rm -f resultats_comparaison_tri.csv
 	rm -f *.png
 
 # Recompilation complète
