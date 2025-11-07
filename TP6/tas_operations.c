@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "tas_operations.h"
 
 /* Fonction qui restaure la propriété de tas max à partir du noeud d'indice i */
@@ -82,8 +83,25 @@ void construireTasMinInsertion(noeud x) {
 	}
 }
 
-void triTas(int *tab,int taille) {
+void triTas(int *tab, int taille) {
 
+	noeud x = malloc(sizeof(*x));
+	
+	x->tab = tab;
+	x->taille = taille;
+	x->mem = taille;
+	
+	construireTasMax(x);
+	
+	for (int i = taille - 1 ; i > 0 ; i--) {
+		echangenoeud(x, 0, i);
+		
+		x->taille--;
+		
+		entasserMax(x, 0);
+	}
+	
+	free(x);
 }
 
 

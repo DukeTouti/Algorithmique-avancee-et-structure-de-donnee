@@ -6,7 +6,7 @@
 /* Fonction pour créer un nouveau noeud */
 noeud nouveauTas() {
 	noeud x ;
-	x = malloc(sizeof(noeud)) ;
+	x = malloc(sizeof(*x)) ;
 
 	if (x == NULL) {
 		perror("Erreur d'allocation mémoire") ;
@@ -36,6 +36,7 @@ int droit(int i) {
 
 /* Fonction qui retourne l'indice de la racine du tas x */
 int racine(noeud x) {
+	(void) x ;
 	return 0 ;
 }
 
