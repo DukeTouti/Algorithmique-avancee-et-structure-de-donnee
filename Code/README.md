@@ -30,6 +30,15 @@ Code/
 ├── README.md                 Ce fichier
 │
 ├── TP5/                      Tas Binaires
+│   ├── graphique/
+│   │   ├── graphique_tas_aleatoire.png
+│   │   ├── graphique_tas_comparaison_complete.png
+│   │   ├── graphique_tas_croissant.png
+│   │   ├── graphique_tas_decroissant.png
+│   │   ├── graphique_tas_loglog_aleatoire.png
+│   │   ├── graphique_tas_loglog_croissant.png
+│   │   └── graphique_tas_loglog_decroissant.png
+│   │
 │   ├── generer_graphiques_tas.py
 │   ├── main.c
 │   ├── Makefile
@@ -39,6 +48,15 @@ Code/
 │   └── type_tas.h
 │
 ├── TP6/                      Comparaison des Algorithmes de Tri
+│   ├── Graphes/
+│   │   ├── graphique_tas_aleatoire.png
+│   │   ├── graphique_tas_comparaison_complete.png
+│   │   ├── graphique_tas_croissant.png
+│   │   ├── graphique_tas_decroissant.png
+│   │   ├── graphique_tas_loglog_aleatoire.png
+│   │   ├── graphique_tas_loglog_croissant.png
+│   │   └── graphique_tas_loglog_decroissant.png
+│   │
 │   ├── generer_graphiques_tas.py
 │   ├── main.c
 │   ├── Makefile
@@ -50,6 +68,12 @@ Code/
 │   └── type_tas.h
 │
 └── TP7/                      Files de Priorité vs Tableau
+    ├── Graphes/
+    │   ├── graphique_comparaison_complete.png
+    │   ├── graphique_extraction.png
+    │   ├── graphique_insertion.png
+    │   └── graphique_loglog.png
+    │
     ├── generer_graphiques_files.py
     ├── main.c
     ├── Makefile
@@ -186,7 +210,7 @@ Tous les codes ont été :
 
 Je présente mes excuses pour cet oubli lors de la première soumission sur Moodle. Les codes ont bien été développés dans les temps et sont entièrement fonctionnels.
 
-Le dépôt GitHub mentionné ci-dessus permet de vérifier l'historique complet du travail et les dates de réalisation.
+Le repo GitHub mentionné ci-dessus permet de vérifier l'historique complet du travail et les dates de réalisation.
 
 Tous les résultats présentés dans les comptes rendus sont reproductibles avec ces codes.
 
