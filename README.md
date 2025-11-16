@@ -9,3 +9,7 @@ TP3 : Tri_Insertion et Tri_fusion : Méthodes de Conception et Calcul Asymptotiq
 TP4 : Arbres Binaires de Recherches ;
 
 TP5 : Tas Binaires ;
+
+TP6 : Comparaison des methodes de tris : Tri Insertion, Tri Fusion, Tri par Tas ;
+
+TP7 : File de priorité vs Tableau simple ;
