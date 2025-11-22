@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 	afficher_table_codes(table, index);
 	
 	/* Etape 4: Sauvegarder la table des codes */
-	sauvegarder_table_codes("../tests/codes.txt", table, index, freq);
+	sauvegarder_table_codes("../tests/codes.txt", table, index, freq, nb_caracteres);
 	
 	/* Etape 5: Compresser le fichier */
 	printf("\n=== Compression du fichier ===\n");

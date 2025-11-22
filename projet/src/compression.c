@@ -55,7 +55,7 @@ int compresser_fichier(const char* fichier_source, const char* fichier_sortie, T
 
 
 /* Sauvegarder la table des codes ET les frequences dans un fichier */
-void sauvegarder_table_codes(const char* fichier, TableCode* table, int nb, Frequence* freq) {
+void sauvegarder_table_codes(const char* fichier, TableCode* table, int nb, Frequence* freq, int nb_freq) {
 	FILE* f = fopen(fichier, "w");
 	
 	if (f == NULL) {
@@ -66,16 +66,25 @@ void sauvegarder_table_codes(const char* fichier, TableCode* table, int nb, Freq
 	/* Ecrire le nombre de codes */
 	fprintf(f, "%d\n", nb);
 	
-	/* Ecrire chaque code AVEC sa frequence */
+	/* Ecrire chaque code AVEC sa frequence correspondante */
 	for (int i = 0; i < nb; i++) {
+		/* Chercher la frequence correspondante */
+		int frequence = 0;
+		for (int j = 0; j < nb_freq; j++) {
+			if (freq[j].caractere == table[i].caractere) {
+				frequence = freq[j].frequence;
+				break;
+			}
+		}
+		
 		if (table[i].caractere == '\n') {
-			fprintf(f, "\\n %s %d\n", table[i].code, freq[i].frequence);
+			fprintf(f, "\\n %s %d\n", table[i].code, frequence);
 		} else if (table[i].caractere == ' ') {
-			fprintf(f, "\\s %s %d\n", table[i].code, freq[i].frequence);
+			fprintf(f, "\\s %s %d\n", table[i].code, frequence);
 		} else if (table[i].caractere == '\t') {
-			fprintf(f, "\\t %s %d\n", table[i].code, freq[i].frequence);
+			fprintf(f, "\\t %s %d\n", table[i].code, frequence);
 		} else {
-			fprintf(f, "%c %s %d\n", table[i].caractere, table[i].code, freq[i].frequence);
+			fprintf(f, "%c %s %d\n", table[i].caractere, table[i].code, frequence);
 		}
 	}
 	
