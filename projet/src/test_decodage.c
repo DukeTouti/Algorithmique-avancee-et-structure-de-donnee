@@ -24,17 +24,9 @@ int main(int argc, char* argv[]) {
 	
 	printf("Table chargee: %d codes\n", nb_codes);
 	
-	/* Etape 2: Reconstruire l'arbre a partir de la table */
+	/* Etape 2: Construire l'arbre depuis les codes */
 	printf("\n=== Reconstruction de l'arbre ===\n");
-	
-	/* Creer les frequences a partir de la table (frequences factices) */
-	Frequence freq[256];
-	for (int i = 0; i < nb_codes; i++) {
-		freq[i].caractere = table[i].caractere;
-		freq[i].frequence = i + 1;	/* Frequences factices pour reconstruire */
-	}
-	
-	NoeudHuffman* racine = construire_arbre_huffman(freq, nb_codes);
+	NoeudHuffman* racine = construire_arbre_depuis_codes(table, nb_codes);
 	
 	if (racine == NULL) {
 		fprintf(stderr, "Erreur lors de la reconstruction de l'arbre\n");
