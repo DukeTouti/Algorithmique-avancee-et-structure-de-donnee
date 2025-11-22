@@ -13,3 +13,6 @@ TP5 : Tas Binaires ;
 TP6 : Comparaison des methodes de tris : Tri Insertion, Tri Fusion, Tri par Tas ;
 
 TP7 : File de priorité vs Tableau simple ;
+
+TP8 : Parcours en Largeur et en Profondeur sur les Graphes ;
+
