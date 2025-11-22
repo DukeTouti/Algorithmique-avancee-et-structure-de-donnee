@@ -11,16 +11,15 @@ HEADERS = types.h tas_min.h frequences.h huffman.h
 
 # Regle par defaut
 all: $(TARGET_TAS) $(TARGET_HUFFMAN)
+	rm -f *.o
 
 # Creation de l'executable test_tas
 $(TARGET_TAS): $(OBJECTS_TAS)
 	$(CC) $(OBJECTS_TAS) -o $(TARGET_TAS)
-	rm -f $(OBJECTS_TAS)
 
 # Creation de l'executable test_huffman
 $(TARGET_HUFFMAN): $(OBJECTS_HUFFMAN)
 	$(CC) $(OBJECTS_HUFFMAN) -o $(TARGET_HUFFMAN)
-	rm -f $(OBJECTS_HUFFMAN)
 
 # Compilation des fichiers objets
 %.o: %.c $(HEADERS)
@@ -28,7 +27,7 @@ $(TARGET_HUFFMAN): $(OBJECTS_HUFFMAN)
 
 # Nettoyage des fichiers objets
 clean:
-	rm -f $(OBJECTS_TAS) $(OBJECTS_HUFFMAN)
+	rm -f *.o
 
 # Nettoyage complet (objets + executables)
 fclean: clean
