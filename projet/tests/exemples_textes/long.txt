@@ -1,0 +1,4 @@
+Le codage de Huffman est une methode de compression de donnees sans perte.
+Il utilise un arbre binaire pour generer des codes de longueur variable.
+Les caracteres les plus frequents obtiennent les codes les plus courts.
+Cette technique est utilisee dans de nombreux formats de compression.
