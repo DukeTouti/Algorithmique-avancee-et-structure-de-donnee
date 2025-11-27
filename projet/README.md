@@ -8,10 +8,10 @@
 
 ## Auteur
 
-HATHOUTI Mohammed Taha - CyberSécurité 3A ESIN
+**HATHOUTI Mohammed Taha** - CyberSécurité 3A ESIN
 
-Enseignant : M. BAKHOUYA  
-Cours : Algorithmique Avancée et Structures de Données
+**Enseignant :** M. BAKHOUYA  
+**Cours :** Algorithmique Avancée et Structures de Données
 
 ---
 
@@ -28,11 +28,11 @@ Principe :
 
 ## Fonctionnalités
 
-- Compression : Encodage de fichiers texte selon l'algorithme de Huffman
-- Décompression : Décodage complet et vérification d'intégrité
-- Mode interactif : Compression en temps réel de texte saisi au clavier
-- Mode fichier : Traitement automatique de fichiers avec génération de statistiques
-- Statistiques détaillées : Taux de compression, gain en bits, tailles avant/après
+- **Compression :** Encodage de fichiers texte selon l'algorithme de Huffman
+- **Décompression :** Décodage complet et vérification d'intégrité
+- **Mode interactif :** Compression en temps réel de texte saisi au clavier
+- **Mode fichier :** Traitement automatique de fichiers avec génération de statistiques
+- **Statistiques détaillées :** Taux de compression, gain en bits, tailles avant/après
 
 ---
 
@@ -67,13 +67,13 @@ HATHOUTI-Mohammed-Taha-ProjetI/
 
 |     Module      |      Fichiers     |                              Description                                |
 |-----------------|-------------------|-------------------------------------------------------------------------|
-| Types           | `types.h`         | Définitions des structures (NoeudHuffman, TasMin, Frequence, TableCode) |
-| Tas-Min         | `tas_min.h/c`     | File de priorité pour construction de l'arbre (O(log n))                |
-| Fréquences      | `frequences.h/c`  | Calcul des occurrences de chaque caractère                              |
-| Huffman         | `huffman.h/c`     | Construction de l'arbre et génération des codes                         |
-| Compression     | `compression.h/c` | Encodage du fichier source                                              |
-| Décodage        | `decodage.h/c`    | Décodage et reconstruction de l'arbre                                   |
-| Modes           | `modes.h/c`       | Interface utilisateur (interactif + fichier)                            |
+| **Types**       | `types.h`         | Définitions des structures (NoeudHuffman, TasMin, Frequence, TableCode) |
+| **Tas-Min**     | `tas_min.h/c`     | File de priorité pour construction de l'arbre (O(log n))                |
+| **Fréquences**  | `frequences.h/c`  | Calcul des occurrences de chaque caractère                              |
+| **Huffman**     | `huffman.h/c`     | Construction de l'arbre et génération des codes                         |
+| **Compression** | `compression.h/c` | Encodage du fichier source                                              |
+| **Décodage**    | `decodage.h/c`    | Décodage et reconstruction de l'arbre                                   |
+| **Modes**       | `modes.h/c`       | Interface utilisateur (interactif + fichier)                            |
 
 ---
 
