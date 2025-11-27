@@ -16,7 +16,7 @@ void mode_interactif(void) {
 	printf("Tapez votre texte et appuyez sur Entree.\n");
 	printf("Tapez 'quit' pour quitter.\n\n");
 	
-	while (true) {
+	while (1) {
 		printf("> ");
 		if (fgets(ligne, sizeof(ligne), stdin) == NULL) {
 			break;
@@ -65,6 +65,16 @@ void mode_interactif(void) {
 		
 		/* Compresser */
 		compresser_fichier(".temp_input.txt", ".temp_compresse.txt", table, index);
+		
+		/* Afficher le texte compressé */
+		printf("\nTexte compresse (en bits) :\n");
+		FILE* comp_display = fopen(".temp_compresse.txt", "r");
+		int c_display;
+		while ((c_display = fgetc(comp_display)) != EOF) {
+			printf("%c", c_display);
+		}
+		printf("\n");
+		fclose(comp_display);
 		
 		/* Calculer le taux de compression */
 		long taille_originale = strlen(ligne) * 8;
