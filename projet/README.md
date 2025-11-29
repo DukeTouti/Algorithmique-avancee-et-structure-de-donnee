@@ -66,6 +66,8 @@ Pour une implémentation production (gain réel), voir section "Améliorations" 
 ```
 HATHOUTI-Mohammed-Taha-ProjetI/
 │
+├── .gitignore
+│
 ├── src/
 │   ├── types.h              # Structures de données
 │   ├── tas_min.h/c          # Tas minimum (file de priorité)
