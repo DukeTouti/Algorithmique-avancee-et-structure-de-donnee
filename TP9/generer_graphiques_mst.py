@@ -1,0 +1,293 @@
+#!/usr/bin/env python3
+"""
+Script de génération de graphiques pour la comparaison Prim vs Kruskal
+TP MST - Algorithmes Avancés
+"""
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import sys
+import os
+
+def charger_donnees(nom_fichier='resultats_comparaison_mst.csv'):
+	"""Charge les données depuis le fichier CSV"""
+	if not os.path.exists(nom_fichier):
+		print(f"❌ Erreur : Le fichier {nom_fichier} n'existe pas.")
+		print(f"   Exécutez d'abord : ./main")
+		sys.exit(1)
+	
+	try:
+		df = pd.read_csv(nom_fichier)
+		df.columns = df.columns.str.strip()
+		print(f"✓ Données chargées : {len(df)} points de mesure")
+		return df
+	except Exception as e:
+		print(f"❌ Erreur lors de la lecture du fichier : {e}")
+		sys.exit(1)
+
+def creer_graphique_par_densite(df):
+	"""Crée un graphique Prim vs Kruskal pour chaque densité"""
+	densites = df['Type'].unique()
+	
+	for densite_type in densites:
+		plt.figure(figsize=(14, 8))
+		
+		# Filtrer les données pour cette densité
+		df_densite = df[df['Type'] == densite_type]
+		
+		# Tracer Prim
+		plt.plot(df_densite['Sommets'], df_densite['Temps_Prim'],
+				'o-', label='Prim',
+				color='blue', linewidth=2, markersize=8)
+		
+		# Tracer Kruskal
+		plt.plot(df_densite['Sommets'], df_densite['Temps_Kruskal'],
+				's-', label='Kruskal',
+				color='red', linewidth=2, markersize=8)
+		
+		# Ajouter valeurs sur les points
+		for i in range(len(df_densite)):
+			plt.text(df_densite['Sommets'].iloc[i], df_densite['Temps_Prim'].iloc[i],
+					f'{df_densite["Temps_Prim"].iloc[i]:.2f}',
+					fontsize=9, color='blue', ha='center', va='bottom')
+			
+			plt.text(df_densite['Sommets'].iloc[i], df_densite['Temps_Kruskal'].iloc[i],
+					f'{df_densite["Temps_Kruskal"].iloc[i]:.2f}',
+					fontsize=9, color='red', ha='center', va='top')
+		
+		densite_val = df_densite['Densite'].iloc[0]
+		plt.xlabel('Nombre de sommets', fontsize=12)
+		plt.ylabel('Temps (ms)', fontsize=12)
+		plt.title(f'Comparaison Prim vs Kruskal\nGraphe {densite_type} (densité {densite_val*100:.0f}%)',
+				fontsize=14, fontweight='bold')
+		plt.legend(fontsize=11, loc='upper left')
+		plt.grid(True, alpha=0.3)
+		
+		plt.xlim(0, df_densite['Sommets'].max() * 1.05)
+		max_temps = max(df_densite['Temps_Prim'].max(), df_densite['Temps_Kruskal'].max())
+		plt.ylim(0, max_temps * 1.2)
+		
+		plt.tight_layout()
+		nom_fichier = f'graphique_prim_kruskal_{densite_type.lower()}.png'
+		plt.savefig(nom_fichier, dpi=300, bbox_inches='tight')
+		print(f"✓ Graphique {densite_type} sauvegardé : {nom_fichier}")
+
+def creer_graphique_global(df):
+	"""Crée un graphique global avec toutes les densités"""
+	plt.figure(figsize=(16, 10))
+	
+	densites = df['Type'].unique()
+	couleurs = {'Sparse': 'green', 'Medium': 'orange', 'Dense': 'red'}
+	marqueurs_prim = {'Sparse': 'o', 'Medium': 's', 'Dense': '^'}
+	marqueurs_kruskal = {'Sparse': 'o', 'Medium': 's', 'Dense': '^'}
+	
+	for densite_type in densites:
+		df_densite = df[df['Type'] == densite_type]
+		couleur = couleurs.get(densite_type, 'blue')
+		
+		# Prim pour cette densité
+		plt.plot(df_densite['Sommets'], df_densite['Temps_Prim'],
+				marker=marqueurs_prim[densite_type], linestyle='-',
+				label=f'Prim - {densite_type}',
+				color=couleur, linewidth=2, markersize=7, alpha=0.8)
+		
+		# Kruskal pour cette densité
+		plt.plot(df_densite['Sommets'], df_densite['Temps_Kruskal'],
+				marker=marqueurs_kruskal[densite_type], linestyle='--',
+				label=f'Kruskal - {densite_type}',
+				color=couleur, linewidth=2, markersize=7, alpha=0.6)
+	
+	plt.xlabel('Nombre de sommets', fontsize=12)
+	plt.ylabel('Temps (ms)', fontsize=12)
+	plt.title('Comparaison GLOBALE : Prim vs Kruskal\n(Toutes densités)',
+			fontsize=14, fontweight='bold')
+	plt.legend(fontsize=10, loc='upper left', ncol=2)
+	plt.grid(True, alpha=0.3)
+	
+	plt.xlim(0, df['Sommets'].max() * 1.05)
+	plt.ylim(0, df[['Temps_Prim', 'Temps_Kruskal']].max().max() * 1.1)
+	
+	plt.tight_layout()
+	plt.savefig('graphique_global.png', dpi=300, bbox_inches='tight')
+	print("✓ Graphique global sauvegardé : graphique_global.png")
+
+def creer_graphique_impact_densite(df):
+	"""Crée un graphique montrant l'impact de la densité"""
+	# Prendre une taille moyenne pour comparer l'impact de la densité
+	tailles = df['Sommets'].unique()
+	taille_ref = tailles[len(tailles)//2]  # Taille au milieu
+	
+	df_taille = df[df['Sommets'] == taille_ref]
+	
+	if len(df_taille) == 0:
+		print("⚠ Pas assez de données pour le graphique d'impact de densité")
+		return
+	
+	plt.figure(figsize=(12, 8))
+	
+	x = np.arange(len(df_taille))
+	largeur = 0.35
+	
+	plt.bar(x - largeur/2, df_taille['Temps_Prim'], largeur,
+			label='Prim', color='blue', alpha=0.8)
+	plt.bar(x + largeur/2, df_taille['Temps_Kruskal'], largeur,
+			label='Kruskal', color='red', alpha=0.8)
+	
+	plt.xlabel('Densité du graphe', fontsize=12)
+	plt.ylabel('Temps (ms)', fontsize=12)
+	plt.title(f'Impact de la DENSITÉ sur les performances\n(Graphe à {taille_ref} sommets)',
+			fontsize=14, fontweight='bold')
+	plt.xticks(x, df_taille['Type'])
+	plt.legend(fontsize=11)
+	plt.grid(True, alpha=0.3, axis='y')
+	
+	# Ajouter les valeurs sur les barres
+	for i, (prim, kruskal) in enumerate(zip(df_taille['Temps_Prim'], df_taille['Temps_Kruskal'])):
+		plt.text(i - largeur/2, prim, f'{prim:.2f}',
+				ha='center', va='bottom', fontsize=10)
+		plt.text(i + largeur/2, kruskal, f'{kruskal:.2f}',
+				ha='center', va='bottom', fontsize=10)
+	
+	plt.tight_layout()
+	plt.savefig('graphique_impact_densite.png', dpi=300, bbox_inches='tight')
+	print("✓ Graphique impact densité sauvegardé : graphique_impact_densite.png")
+
+def creer_graphique_loglog(df):
+	"""Crée un graphique en échelle log-log"""
+	plt.figure(figsize=(14, 9))
+	
+	densites = df['Type'].unique()
+	couleurs = {'Sparse': 'green', 'Medium': 'orange', 'Dense': 'red'}
+	
+	for densite_type in densites:
+		df_densite = df[df['Type'] == densite_type]
+		couleur = couleurs.get(densite_type, 'blue')
+		
+		plt.loglog(df_densite['Sommets'], df_densite['Temps_Prim'],
+				'o-', label=f'Prim - {densite_type}',
+				color=couleur, linewidth=2, markersize=8, alpha=0.8)
+		
+		plt.loglog(df_densite['Sommets'], df_densite['Temps_Kruskal'],
+				's--', label=f'Kruskal - {densite_type}',
+				color=couleur, linewidth=2, markersize=8, alpha=0.6)
+	
+	plt.xlabel('Nombre de sommets (log)', fontsize=12, fontweight='bold')
+	plt.ylabel('Temps (ms, log)', fontsize=12, fontweight='bold')
+	plt.title('Comparaison Prim vs Kruskal\n(Échelle log-log)',
+			fontsize=14, fontweight='bold')
+	plt.legend(fontsize=10, loc='upper left')
+	plt.grid(True, alpha=0.3, which='both')
+	
+	plt.tight_layout()
+	plt.savefig('graphique_loglog.png', dpi=300, bbox_inches='tight')
+	print("✓ Graphique log-log sauvegardé : graphique_loglog.png")
+
+def afficher_statistiques(df):
+	"""Affiche des statistiques sur les performances"""
+	print("\n" + "="*80)
+	print("STATISTIQUES DE PERFORMANCE")
+	print("="*80)
+	
+	densites = df['Type'].unique()
+	
+	for densite_type in densites:
+		df_densite = df[df['Type'] == densite_type]
+		derniere_ligne = df_densite.iloc[-1]
+		premiere_ligne = df_densite.iloc[0]
+		
+		n = int(derniere_ligne['Sommets'])
+		densite_val = derniere_ligne['Densite']
+		
+		print(f"\n{'='*80}")
+		print(f"GRAPHE {densite_type.upper()} (densité {densite_val*100:.0f}%)")
+		print(f"{'='*80}")
+		
+		print(f"\nPour n = {n} sommets :")
+		print(f"  • Prim    : {derniere_ligne['Temps_Prim']:.2f} ms")
+		print(f"  • Kruskal : {derniere_ligne['Temps_Kruskal']:.2f} ms")
+		
+		if derniere_ligne['Temps_Prim'] > derniere_ligne['Temps_Kruskal']:
+			ratio = derniere_ligne['Temps_Prim'] / derniere_ligne['Temps_Kruskal']
+			print(f"  → Kruskal est {ratio:.2f}× plus RAPIDE ✓")
+		else:
+			ratio = derniere_ligne['Temps_Kruskal'] / derniere_ligne['Temps_Prim']
+			print(f"  → Prim est {ratio:.2f}× plus RAPIDE ✓")
+		
+		# Analyse de croissance
+		facteur_taille = derniere_ligne['Sommets'] / premiere_ligne['Sommets']
+		facteur_prim = derniere_ligne['Temps_Prim'] / premiere_ligne['Temps_Prim'] if premiere_ligne['Temps_Prim'] > 0 else 0
+		facteur_kruskal = derniere_ligne['Temps_Kruskal'] / premiere_ligne['Temps_Kruskal'] if premiere_ligne['Temps_Kruskal'] > 0 else 0
+		
+		print(f"\n  CROISSANCE (taille ×{facteur_taille:.1f}) :")
+		print(f"  • Prim    : temps ×{facteur_prim:.1f}")
+		print(f"  • Kruskal : temps ×{facteur_kruskal:.1f}")
+	
+	print("\n" + "="*80 + "\n")
+
+def afficher_tableau_resultats(df):
+	"""Affiche un tableau des résultats"""
+	print("\n" + "="*100)
+	print("TABLEAU DES RÉSULTATS")
+	print("="*100)
+	print(f"{'Sommets':>10} | {'Densité':>10} | {'Type':>10} | {'Prim (ms)':>12} | {'Kruskal (ms)':>12}")
+	print("-" * 100)
+	
+	for i in range(len(df)):
+		print(f"{int(df['Sommets'].iloc[i]):>10} | "
+			f"{df['Densite'].iloc[i]:>10.1f} | "
+			f"{df['Type'].iloc[i]:>10} | "
+			f"{df['Temps_Prim'].iloc[i]:>12.2f} | "
+			f"{df['Temps_Kruskal'].iloc[i]:>12.2f}")
+	
+	print("="*100 + "\n")
+
+def main():
+	print("\n" + "="*80)
+	print("GÉNÉRATION DES GRAPHIQUES - PRIM vs KRUSKAL")
+	print("="*80 + "\n")
+	
+	# Charger données
+	df = charger_donnees()
+	
+	# Afficher tableau
+	afficher_tableau_resultats(df)
+	
+	# Afficher statistiques
+	afficher_statistiques(df)
+	
+	# Créer graphiques
+	print("Génération des graphiques...")
+	creer_graphique_par_densite(df)
+	creer_graphique_global(df)
+	creer_graphique_impact_densite(df)
+	creer_graphique_loglog(df)
+	
+	print("\n✓ Tous les graphiques ont été générés avec succès !")
+	print("\nFichiers créés :")
+	print("  - graphique_prim_kruskal_sparse.png : Graphes peu denses")
+	print("  - graphique_prim_kruskal_medium.png : Graphes moyennement denses")
+	print("  - graphique_prim_kruskal_dense.png : Graphes très denses")
+	print("  - graphique_global.png : Toutes configurations")
+	print("  - graphique_impact_densite.png : Impact de la densité")
+	print("  - graphique_loglog.png : Échelle log-log")
+	
+	print("\n" + "="*80)
+	print("ANALYSE THÉORIQUE")
+	print("="*80)
+	print("Prim :")
+	print("  • Complexité : O((V + E) log V) avec min-heap")
+	print("  • Sélectionne les arêtes de plus faible poids connectant le MST")
+	print("  • Construit l'arbre sommet par sommet")
+	print("\nKruskal :")
+	print("  • Complexité : O(E log E)")
+	print("  • Trie les arêtes par poids croissant")
+	print("  • Ajoute les arêtes qui ne forment pas de cycle")
+	print("\nCONCLUSION :")
+	print("  Sur graphes peu denses (E << V²) : Kruskal peut être plus rapide")
+	print("  Sur graphes très denses (E ≈ V²) : Prim peut être plus rapide")
+	print("  La densité est le facteur déterminant")
+	print("="*80 + "\n")
+
+if __name__ == "__main__":
+	main()
