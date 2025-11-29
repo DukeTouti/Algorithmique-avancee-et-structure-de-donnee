@@ -253,7 +253,6 @@ Pour chaque fichier compressé, 3 fichiers sont créés :
 - **Support limité** : Fichiers texte ASCII uniquement
 
 **Voir le compte-rendu (CR_Projet_Algo.pdf) pour une analyse approfondie.**
-```
 
 ---
 
