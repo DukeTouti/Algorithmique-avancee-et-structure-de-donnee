@@ -26,6 +26,30 @@ Principe :
 
 ---
 
+## Note Importante : Approche Pédagogique
+
+Ce projet privilégie la **compréhension de l'algorithme** plutôt que l'efficacité maximale :
+
+### Stockage en caractères '0'/'1'
+Les bits compressés sont stockés sous forme de **caractères** '0' et '1' (et non de vrais bits), ce qui permet :
+- **Débogage facile** : visualisation directe du résultat
+- **Validation manuelle** : vérification des codes générés
+- **Portabilité** : pas de manipulation bit-à-bit complexe
+
+**Conséquence** : Le fichier "compressé" est **8 fois plus gros** qu'une compression réelle.
+
+**Exemple** :
+- Taille théorique compressée : 62 bits = **7.75 octets**
+- Taille réelle sur disque : 62 caractères = **62 octets**
+- Paradoxe : le fichier "compressé" peut être plus gros que l'original !
+
+### Taux de compression affichés
+Les **taux de compression** affichés par le programme sont **théoriques** et représentent ce qui serait obtenu avec un vrai encodage bit-à-bit.
+
+Pour une implémentation production (gain réel), voir section "Améliorations" du compte-rendu.
+
+---
+
 ## Fonctionnalités
 
 - **Compression :** Encodage de fichiers texte selon l'algorithme de Huffman
@@ -57,10 +81,14 @@ HATHOUTI-Mohammed-Taha-ProjetI/
 │   ├── test_decodage.c      # Tests décompression
 │   └── Makefile             # Compilation
 │
-└── tests/
-    ├── exemples_simples/    # Tests basiques (4 fichiers)
-    ├── exemples_textes/     # Textes réalistes (6 fichiers)
-    └── cas_limites/         # Cas extrêmes (9 fichiers)
+├── tests/
+│   ├── exemples_simples/    # Tests basiques (4 fichiers)
+│   ├── exemples_textes/     # Textes réalistes (6 fichiers)
+│   └── cas_limites/         # Cas extrêmes (9 fichiers)
+│
+├── CR_Projet_Algo.pdf
+│
+└── README.md
 ```
     
 ### Modules
@@ -165,7 +193,7 @@ Fichier source : ../tests/exemples_textes/simple.txt
   -> Fichier décompressé
 
 Vérification de l'intégrité...
-  ✅ Vérification réussie : fichiers identiques
+   Vérification réussie : fichiers identiques
 
 === Statistiques de Compression ===
 Fichier source:        ../tests/exemples_textes/simple.txt
@@ -183,6 +211,8 @@ Gain:                  74 bits
   - ../tests/exemples_textes/simple_compresse.txt
   - ../tests/exemples_textes/simple_decompresse.txt
 ```
+
+**Note** : Les tailles affichées (en bits) sont théoriques. Sur disque, les fichiers compressés sont stockés en caractères '0'/'1', donc la taille réelle est 8 fois plus grande.
 
 ### Fichiers Générés
 
@@ -215,11 +245,33 @@ Pour chaque fichier compressé, 3 fichiers sont créés :
 
 ---
 
-**Pour plus de détails sur les algorithmes et structures de données, consulter le compte-rendu LaTeX.**
+## Limitations
+
+### Implémentation actuelle
+- **Stockage inefficace** : Caractères '0'/'1' au lieu de bits réels (×8 perte)
+- **Table séparée** : 3 fichiers générés (codes, compressé, décompressé)
+- **Support limité** : Fichiers texte ASCII uniquement
+
+**Voir le compte-rendu (CR_Projet_Algo.pdf) pour une analyse approfondie.**
+```
 
 ---
 
-**Date :** Novembre 2025 
+## 📚 Documentation Complète
+
+Pour une analyse approfondie incluant :
+- Justifications des choix de conception
+- Analyse théorique des complexités
+- Résultats expérimentaux détaillés (taux de compression sur 19 fichiers de test)
+- Discussion critique des limites
+- Améliorations possibles
+
+**Consulter le compte-rendu :** `CR_Projet_Algo.pdf`
+
+---
+
+**Projet I - Algorithmique Avancée**
+**Année universitaire 2025-2026**
 
 
 
