@@ -256,7 +256,7 @@ Pour chaque fichier compressé, 3 fichiers sont créés :
 
 ---
 
-## 📚 Documentation Complète
+## Documentation Complète
 
 Pour une analyse approfondie incluant :
 - Justifications des choix de conception
