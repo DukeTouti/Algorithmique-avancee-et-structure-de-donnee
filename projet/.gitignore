@@ -1,0 +1,18 @@
+# Exécutables
+huffman
+test_tas
+test_huffman
+test_compression
+test_decodage
+
+# Fichiers objets
+*.o
+
+# Fichiers générés par les tests
+tests/**/*_compresse.txt
+tests/**/*_decompresse.txt
+tests/**/*_codes.txt
+
+# Dossiers de build
+build/
+bin/
