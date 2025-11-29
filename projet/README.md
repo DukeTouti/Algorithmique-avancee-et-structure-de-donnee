@@ -270,6 +270,7 @@ Pour une analyse approfondie incluant :
 ---
 
 **Projet I - Algorithmique Avancée**
+
 **Année universitaire 2025-2026**
 
 
