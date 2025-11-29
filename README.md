@@ -16,3 +16,5 @@ TP7 : File de priorité vs Tableau simple ;
 
 TP8 : Parcours en Largeur et en Profondeur sur les Graphes ;
 
+TP9 : MST : Prim vs Kruskal ;
+
