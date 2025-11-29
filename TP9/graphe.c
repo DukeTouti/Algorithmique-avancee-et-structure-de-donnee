@@ -42,7 +42,7 @@ Graphe* creerGraphe(int nombreSommets) {
 }
 
 /* Ajouter une arête non orientée entre deux sommets */
-void ajouterArrete(Graphe* graphe, int src, int dest, int poids) {
+void ajouterArete(Graphe* graphe, int src, int dest, int poids) {
 	
 	// Vérifier que les sommets sont valides
 	if ((src < 0) || (src >= graphe->nombreSommets) || (dest < 0) || (dest >= graphe->nombreSommets)) {
