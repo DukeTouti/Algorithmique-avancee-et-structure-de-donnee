@@ -5,6 +5,7 @@ CFLAGS = -Wall -Wextra -std=c99 -g
 # Cibles
 TARGET_DIJKSTRA = test_dijkstra
 TARGET_BELLMAN = test_bellman_ford
+TARGET_FLOYD = test_floyd_warshall
 
 # Sources Dijkstra
 SOURCES_DIJKSTRA = test_dijkstra.c dijkstra.c affichage.c
@@ -16,8 +17,13 @@ SOURCES_BELLMAN = test_bellman_ford.c bellman_ford.c affichage_bf.c
 OBJECTS_BELLMAN = $(SOURCES_BELLMAN:.c=.o)
 HEADERS_BELLMAN = bellman_ford.h affichage_bf.h
 
-# Règle par défaut: compiler les deux
-all: $(TARGET_DIJKSTRA) $(TARGET_BELLMAN)
+# Sources Floyd-Warshall
+SOURCES_FLOYD = test_floyd_warshall.c floyd_warshall.c affichage_fw.c
+OBJECTS_FLOYD = $(SOURCES_FLOYD:.c=.o)
+HEADERS_FLOYD = floyd_warshall.h affichage_fw.h
+
+# Règle par défaut: compiler les trois
+all: $(TARGET_DIJKSTRA) $(TARGET_BELLMAN) $(TARGET_FLOYD)
 
 # === DIJKSTRA ===
 
@@ -53,16 +59,33 @@ bellman_ford.o: bellman_ford.c $(HEADERS_BELLMAN)
 affichage_bf.o: affichage_bf.c $(HEADERS_BELLMAN)
 	$(CC) $(CFLAGS) -c affichage_bf.c -o affichage_bf.o
 
+# === FLOYD-WARSHALL ===
+
+# Création de l'exécutable Floyd-Warshall
+$(TARGET_FLOYD): $(OBJECTS_FLOYD)
+	$(CC) $(OBJECTS_FLOYD) -o $(TARGET_FLOYD)
+	rm -f $(OBJECTS_FLOYD)
+
+# Compilation des fichiers objets Floyd-Warshall
+test_floyd_warshall.o: test_floyd_warshall.c $(HEADERS_FLOYD)
+	$(CC) $(CFLAGS) -c test_floyd_warshall.c -o test_floyd_warshall.o
+
+floyd_warshall.o: floyd_warshall.c $(HEADERS_FLOYD)
+	$(CC) $(CFLAGS) -c floyd_warshall.c -o floyd_warshall.o
+
+affichage_fw.o: affichage_fw.c $(HEADERS_FLOYD)
+	$(CC) $(CFLAGS) -c affichage_fw.c -o affichage_fw.o
+
 # === RÈGLES GÉNÉRALES ===
 
 # Nettoyage des fichiers objets
 clean:
-	rm -f $(OBJECTS_DIJKSTRA) $(OBJECTS_BELLMAN)
+	rm -f $(OBJECTS_DIJKSTRA) $(OBJECTS_BELLMAN) $(OBJECTS_FLOYD)
 	rm -f *.o
 
 # Nettoyage complet (objets + exécutables + résultats)
 fclean: clean
-	rm -f $(TARGET_DIJKSTRA) $(TARGET_BELLMAN)
+	rm -f $(TARGET_DIJKSTRA) $(TARGET_BELLMAN) $(TARGET_FLOYD)
 	rm -f resultats_*.csv
 	rm -f *.png
 
@@ -77,12 +100,18 @@ run-dijkstra: $(TARGET_DIJKSTRA)
 run-bellman: $(TARGET_BELLMAN)
 	./$(TARGET_BELLMAN)
 
-# Exécution des deux
-run-all: $(TARGET_DIJKSTRA) $(TARGET_BELLMAN)
+# Exécution Floyd-Warshall
+run-floyd: $(TARGET_FLOYD)
+	./$(TARGET_FLOYD)
+
+# Exécution des trois
+run-all: $(TARGET_DIJKSTRA) $(TARGET_BELLMAN) $(TARGET_FLOYD)
 	@echo "\n=== Exécution de Dijkstra ===\n"
 	./$(TARGET_DIJKSTRA)
 	@echo "\n\n=== Exécution de Bellman-Ford ===\n"
 	./$(TARGET_BELLMAN)
+	@echo "\n\n=== Exécution de Floyd-Warshall ===\n"
+	./$(TARGET_FLOYD)
 
 # Génération des graphiques (si tu en ajoutes plus tard)
 graph:
@@ -92,4 +121,4 @@ graph:
 full: re run-all graph
 
 # Déclaration des cibles qui ne sont pas des fichiers
-.PHONY: all clean fclean re run-dijkstra run-bellman run-all graph full
+.PHONY: all clean fclean re run-dijkstra run-bellman run-floyd run-all graph full
