@@ -39,7 +39,7 @@ void afficherChemin(int pred[], int start, int end) {
 	}
 	
 	afficherChemin(pred, start, pred[end]);
-	printf(" → %d", end);
+	printf(" -> %d", end);
 }
 
 /* Afficher les résultats finaux avec chemins */
