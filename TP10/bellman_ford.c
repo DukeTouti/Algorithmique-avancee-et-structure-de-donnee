@@ -29,7 +29,7 @@ void libererGraphe(Graphe *g) {
 void initialiserDistances(int distance[], int pred[], int tV, int source) {
 	for (int i = 0; i < tV; i++) {
 		distance[i] = INFINITY;
-		pred[i] = 0;
+		pred[i] = -1;
 	}
 	distance[source] = 0;
 }

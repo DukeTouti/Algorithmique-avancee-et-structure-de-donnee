@@ -39,7 +39,7 @@ void afficherCheminBF(int pred[], int source, int dest) {
 		printf("%d", source);
 		return;
 	}
-	if (pred[dest] == 0 && dest != source) {
+	if (pred[dest] == -1 && dest != source) {
 		printf("Pas de chemin");
 		return;
 	}
