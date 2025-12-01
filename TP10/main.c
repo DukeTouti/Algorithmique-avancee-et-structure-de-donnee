@@ -1,182 +1,295 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "dijkstra.h"
-#include "bellman_ford.h"
-#include "floyd_warshall.h"
-#include "affichage.h"
-#include "affichage_bf.h"
-#include "affichage_fw.h"
+#include <limits.h>
 
-/* Fonction pour générer un graphe aléatoire avec une densité donnée */
-static Graphe* genererGrapheAleatoirePondere(int nombreSommets, double densite, int poidsMin, int poidsMax) {
-	Graphe* graphe = creerGraphe(nombreSommets);
+#define MAX_V 2000
+#define INF 99999
+
+/* ==================== GÉNÉRATION DE GRAPHES ==================== */
+
+static void genererGrapheAleatoirePondere(int graph[MAX_V][MAX_V], int n, double densite, int poidsMin, int poidsMax) {
+	int i, j;
 	
-	/* Calculer le nombre maximum d'arêtes possibles (graphe orienté) */
-	int maxArretes = nombreSommets * (nombreSommets - 1);
-	int nombreArretes = (int)(maxArretes * densite);
-	
-	/* Ajouter des arêtes aléatoires avec poids aléatoires */
-	int arretesAjoutees = 0;
-	while (arretesAjoutees < nombreArretes) {
-		int src = rand() % nombreSommets;
-		int dest = rand() % nombreSommets;
-		
-		/* Éviter les boucles (src == dest) */
-		if (src != dest) {
-			/* Vérifier si l'arête existe déjà */
-			int existe = 0;
-			
-			/* Ajouter l'arête avec un poids aléatoire */
-			if (!existe) {
-				int poids = poidsMin + (rand() % (poidsMax - poidsMin + 1));
-				ajouterArete(graphe, src, dest, poids);
-				arretesAjoutees++;
+	// Initialiser à INF
+	for (i = 0; i < n; i++) {
+		for (j = 0; j < n; j++) {
+			if (i == j) {
+				graph[i][j] = 0;
+			} else {
+				graph[i][j] = INF;
 			}
 		}
 	}
 	
-	return graphe;
+	// Ajouter arêtes selon densité
+	for (i = 0; i < n; i++) {
+		for (j = 0; j < n; j++) {
+			if (i != j) {
+				double random = (double)rand() / RAND_MAX;
+				if (random < densite) {
+					graph[i][j] = poidsMin + rand() % (poidsMax - poidsMin + 1);
+				}
+			}
+		}
+	}
 }
 
+/* ==================== DIJKSTRA (SILENCIEUX) ==================== */
+
+static int trouverMinDistance(int distance[], int visited[], int n) {
+	int min = INF, minIndex = -1;
+	int i;
+	
+	for (i = 0; i < n; i++) {
+		if (!visited[i] && distance[i] < min) {
+			min = distance[i];
+			minIndex = i;
+		}
+	}
+	
+	return minIndex;
+}
+
+static void dijkstraSilencieux(int graph[MAX_V][MAX_V], int n, int start, int distance[]) {
+	int visited[MAX_V] = {0};
+	int i, j, u, count;
+	
+	// Initialisation
+	for (i = 0; i < n; i++) {
+		distance[i] = INF;
+	}
+	distance[start] = 0;
+	
+	// Algorithme principal
+	for (count = 0; count < n - 1; count++) {
+		u = trouverMinDistance(distance, visited, n);
+		if (u == -1) break;
+		
+		visited[u] = 1;
+		
+		// Relaxation
+		for (j = 0; j < n; j++) {
+			if (!visited[j] && graph[u][j] != INF && 
+			    distance[u] != INF && 
+			    distance[u] + graph[u][j] < distance[j]) {
+				distance[j] = distance[u] + graph[u][j];
+			}
+		}
+	}
+}
+
+/* ==================== BELLMAN-FORD (SILENCIEUX) ==================== */
+
+static void bellmanFordSilencieux(int graph[MAX_V][MAX_V], int n, int start, int distance[]) {
+	int i, j, k;
+	
+	// Initialisation
+	for (i = 0; i < n; i++) {
+		distance[i] = INF;
+	}
+	distance[start] = 0;
+	
+	// Relaxation V-1 fois
+	for (k = 0; k < n - 1; k++) {
+		for (i = 0; i < n; i++) {
+			for (j = 0; j < n; j++) {
+				if (graph[i][j] != INF && distance[i] != INF) {
+					if (distance[i] + graph[i][j] < distance[j]) {
+						distance[j] = distance[i] + graph[i][j];
+					}
+				}
+			}
+		}
+	}
+}
+
+/* ==================== FLOYD-WARSHALL (SILENCIEUX) ==================== */
+
+static void floydWarshallSilencieux(int graph[MAX_V][MAX_V], int n, int result[MAX_V][MAX_V]) {
+	int i, j, k;
+	
+	// Copier le graphe
+	for (i = 0; i < n; i++) {
+		for (j = 0; j < n; j++) {
+			result[i][j] = graph[i][j];
+		}
+	}
+	
+	// Algorithme Floyd-Warshall
+	for (k = 0; k < n; k++) {
+		for (i = 0; i < n; i++) {
+			for (j = 0; j < n; j++) {
+				if (result[i][k] != INF && result[k][j] != INF) {
+					if (result[i][k] + result[k][j] < result[i][j]) {
+						result[i][j] = result[i][k] + result[k][j];
+					}
+				}
+			}
+		}
+	}
+}
+
+/* ==================== MAIN ==================== */
+
 int main() {
+	static int graph[MAX_V][MAX_V];
+	static int result[MAX_V][MAX_V];
+	int distance[MAX_V];
+	int tailles[] = {10, 20, 30, 50, 75, 100, 150, 200};
+	double densites[] = {0.1, 0.3, 0.7};
+	const char *types[] = {"Sparse", "Medium", "Dense"};
+	int nbTailles = 8;
+	int nbDensites = 3;
+	int i, j, t, d;
+	clock_t debut, fin;
+	double tempsDijkstra, tempsBellman, tempsFloyd;
+	FILE *fichier;
+	
 	srand(time(NULL));
 	
 	printf("=== COMPARAISON DIJKSTRA vs BELLMAN-FORD vs FLOYD-WARSHALL ===\n\n");
 	
-	/* ============================================
-	   TEST 1 : Exemple simple avec affichage
-	   ============================================ */
+	/* ==================== TEST 1 : Démonstration ==================== */
 	printf("--- TEST 1 : Démonstration sur petit graphe ---\n");
 	
-	/* Créer le graphe de démonstration (5 sommets) */
-	Graphe* grapheDemo = creerGraphe(5);
+	// Graphe Figure 3.35 (5 sommets)
+	int graphTest[5][5] = {
+		{0, 3, 8, INF, -4},
+		{INF, 0, INF, 1, 7},
+		{INF, 4, 0, INF, INF},
+		{2, INF, -5, 0, INF},
+		{INF, INF, INF, 6, 0}
+	};
 	
-	/* Ajouter les arêtes (graphe de la Figure 3.35 pour Floyd-Warshall) */
-	ajouterArete(grapheDemo, 0, 1, 3);
-	ajouterArete(grapheDemo, 0, 2, 8);
-	ajouterArete(grapheDemo, 0, 4, -4);
-	ajouterArete(grapheDemo, 1, 3, 1);
-	ajouterArete(grapheDemo, 1, 4, 7);
-	ajouterArete(grapheDemo, 2, 1, 4);
-	ajouterArete(grapheDemo, 3, 0, 2);
-	ajouterArete(grapheDemo, 3, 2, -5);
-	ajouterArete(grapheDemo, 4, 3, 6);
-	
-	afficherGrapheDemo(grapheDemo);
-	
-	/* Dijkstra depuis chaque sommet */
-	printf("\n--- Algorithme de DIJKSTRA (depuis chaque sommet) ---\n");
-	for (int source = 0 ; source < grapheDemo->nombreSommets ; source++) {
-		printf("\nSource: %d\n", source);
-		ResultatDijkstra resultatDij;
-		dijkstra(grapheDemo, grapheDemo->nombreSommets, source, &resultatDij);
-		afficherDistancesBrief(resultatDij.distance, grapheDemo->nombreSommets, source);
-	}
-	
-	/* Bellman-Ford depuis chaque sommet */
-	printf("\n--- Algorithme de BELLMAN-FORD (depuis chaque sommet) ---\n");
-	for (int source = 0 ; source < grapheDemo->nombreSommets ; source++) {
-		printf("\nSource: %d\n", source);
-		ResultatBellmanFord* resultatBF = bellmanFord(grapheDemo, source);
-		afficherDistancesBrief(resultatBF->distance, grapheDemo->nombreSommets, source);
-		libererResultat(resultatBF);
-	}
-	
-	/* Floyd-Warshall */
-	printf("\n--- Algorithme de FLOYD-WARSHALL ---\n");
-	ResultatFloydWarshall resultatFW;
-	floydWarshall(grapheDemo, &resultatFW);
-	afficherMatriceFWBrief(resultatFW.matrix);
-	
-	libererGraphe(grapheDemo);
-	
-	/* ============================================
-	   TEST 2 : Comparaison de performance
-	   ============================================ */
-	printf("\n--- TEST 2 : Analyse de performance ---\n\n");
-	
-	FILE* f = fopen("resultats_comparaison_chemins.csv", "w");
-	if (f == NULL) {
-		perror("Erreur lors de l'ouverture du fichier");
-		return 1;
-	}
-	
-	fprintf(f, "Sommets,Densite,Type,Temps_Dijkstra,Temps_BellmanFord,Temps_FloydWarshall\n");
-	
-	/* Tailles de graphes à tester */
-	int tailles[] = {50, 100, 200, 500, 1000, 2000};
-	int nb_tailles = sizeof(tailles) / sizeof(tailles[0]);
-	
-	/* Densités à tester */
-	double densites[] = {0.1, 0.3, 0.7};
-	char* types[] = {"Sparse", "Medium", "Dense"};
-	int nb_densites = sizeof(densites) / sizeof(densites[0]);
-	
-	for (int i = 0 ; i < nb_tailles ; i++) {
-		int n = tailles[i];
-		
-		printf("Test : %d sommets :\n", n);
-		
-		for (int j = 0 ; j < nb_densites ; j++) {
-			double densite = densites[j];
-			char* type = types[j];
-			
-			printf("  densité %.1f%% (%s) :\n", densite * 100, type);
-			
-			/* Générer un graphe aléatoire pondéré */
-			Graphe* grapheTest = genererGrapheAleatoirePondere(n, densite, 1, 100);
-			
-			/* Mesure Dijkstra (depuis chaque sommet) */
-			clock_t start_dijkstra = clock();
-			for (int source = 0 ; source < n ; source++) {
-				ResultatDijkstra resultatD;
-				dijkstra(grapheTest, n, source, &resultatD);
-			}
-			clock_t end_dijkstra = clock();
-			double temps_dijkstra = ((double)(end_dijkstra - start_dijkstra) / CLOCKS_PER_SEC) * 1000;
-			
-			/* Mesure Bellman-Ford (depuis chaque sommet) */
-			clock_t start_bellman = clock();
-			for (int source = 0 ; source < n ; source++) {
-				ResultatBellmanFord* resultatB = bellmanFord(grapheTest, source);
-				libererResultat(resultatB);
-			}
-			clock_t end_bellman = clock();
-			double temps_bellman = ((double)(end_bellman - start_bellman) / CLOCKS_PER_SEC) * 1000;
-			
-			/* Mesure Floyd-Warshall (une seule fois) */
-			clock_t start_floyd = clock();
-			ResultatFloydWarshall resultatF;
-			floydWarshall(grapheTest, &resultatF);
-			clock_t end_floyd = clock();
-			double temps_floyd = ((double)(end_floyd - start_floyd) / CLOCKS_PER_SEC) * 1000;
-			
-			printf("     Dijkstra     : %.2f ms\n", temps_dijkstra);
-			printf("     Bellman-Ford : %.2f ms\n", temps_bellman);
-			printf("     Floyd-Warsh. : %.2f ms\n\n", temps_floyd);
-			
-			/* Sauvegarder dans le CSV */
-			fprintf(f, "%d,%.1f,%s,%.2f,%.2f,%.2f\n", 
-				n, densite, type, temps_dijkstra, temps_bellman, temps_floyd);
-			
-			/* Libérer la mémoire */
-			libererGraphe(grapheTest);
+	// Copier dans graph
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 5; j++) {
+			graph[i][j] = graphTest[i][j];
 		}
 	}
 	
-	fclose(f);
+	printf("Graphe de test (5 sommets):\n");
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 5; j++) {
+			if (graph[i][j] == INF) {
+				printf(" infini ");
+			} else {
+				printf("%3d ", graph[i][j]);
+			}
+		}
+		printf("\n");
+	}
+	printf("\n");
+	
+	// Dijkstra depuis sommet 0
+	printf("Dijkstra (source 0): ");
+	dijkstraSilencieux(graph, 5, 0, distance);
+	for (i = 0; i < 5; i++) {
+		if (distance[i] == INF) {
+			printf("infini ");
+		} else {
+			printf("%d ", distance[i]);
+		}
+	}
+	printf("\n");
+	
+	// Bellman-Ford depuis sommet 0
+	printf("Bellman-Ford (source 0): ");
+	bellmanFordSilencieux(graph, 5, 0, distance);
+	for (i = 0; i < 5; i++) {
+		if (distance[i] == INF) {
+			printf("infini ");
+		} else {
+			printf("%d ", distance[i]);
+		}
+	}
+	printf("\n");
+	
+	// Floyd-Warshall
+	printf("Floyd-Warshall (toutes paires):\n");
+	floydWarshallSilencieux(graph, 5, result);
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 5; j++) {
+			if (result[i][j] == INF) {
+				printf(" inifini ");
+			} else {
+				printf("%3d ", result[i][j]);
+			}
+		}
+		printf("\n");
+	}
+	printf("\n");
+	
+	/* ==================== TEST 2 : Performance ==================== */
+	printf("--- TEST 2 : Analyse de performance ---\n\n");
+	
+	fichier = fopen("resultats_comparaison_chemins.csv", "w");
+	if (fichier == NULL) {
+		fprintf(stderr, "Erreur: impossible de créer le fichier CSV\n");
+		return 1;
+	}
+	
+	fprintf(fichier, "Sommets,Densite,Type,Temps_Dijkstra_us,Temps_BellmanFord_us,Temps_FloydWarshall_us\n");
+	
+	for (t = 0; t < nbTailles; t++) {
+		int n = tailles[t];
+		
+		printf("Taille: %d sommets\n", n);
+		
+		for (d = 0; d < nbDensites; d++) {
+			double densite = densites[d];
+			const char *type = types[d];
+			
+			printf("  Densité: %.2f (%s)\n", densite, type);
+			
+			// Générer graphe
+			genererGrapheAleatoirePondere(graph, n, densite, 1, 100);
+			
+			// Dijkstra (tous sommets)
+			debut = clock();
+			for (i = 0; i < n; i++) {
+				dijkstraSilencieux(graph, n, i, distance);
+			}
+			fin = clock();
+			tempsDijkstra = ((double)(fin - debut)) * 1000000.0 / CLOCKS_PER_SEC;
+			
+			// Bellman-Ford (tous sommets)
+			debut = clock();
+			for (i = 0; i < n; i++) {
+				bellmanFordSilencieux(graph, n, i, distance);
+			}
+			fin = clock();
+			tempsBellman = ((double)(fin - debut)) * 1000000.0 / CLOCKS_PER_SEC;
+			
+			// Floyd-Warshall (une seule fois)
+			debut = clock();
+			floydWarshallSilencieux(graph, n, result);
+			fin = clock();
+			tempsFloyd = ((double)(fin - debut)) * 1000000.0 / CLOCKS_PER_SEC;
+			
+			printf("    Temps Dijkstra      : %.2f µs\n", tempsDijkstra);
+			printf("    Temps Bellman-Ford  : %.2f µs\n", tempsBellman);
+			printf("    Temps Floyd-Warshall: %.2f µs\n", tempsFloyd);
+			
+			fprintf(fichier, "%d,%.2f,%s,%.2f,%.2f,%.2f\n", 
+			        n, densite, type, tempsDijkstra, tempsBellman, tempsFloyd);
+		}
+		printf("\n");
+	}
+	
+	fclose(fichier);
 	
 	printf("=== ANALYSE THÉORIQUE ===\n");
-	printf("Complexité Dijkstra (tous sommets)   : O(V × (V + E) log V) avec min-heap\n");
-	printf("                                       : O(V^3) avec implémentation simple\n");
+	printf("Complexité Dijkstra (tous sommets)   : O(V^3) avec implémentation simple\n");
+	printf("                                       : O(V × (V + E) log V) avec min-heap\n");
 	printf("Complexité Bellman-Ford (tous sommets): O(V^2 × E)\n");
 	printf("Complexité Floyd-Warshall             : O(V^3)\n");
 	printf("  V = nombre de sommets\n");
 	printf("  E = nombre d'arêtes\n\n");
 	
 	printf("Les résultats ont été sauvegardés dans 'resultats_comparaison_chemins.csv'\n");
-	printf("Exécutez 'python3 generer_graphiques_chemins.py' pour visualiser les courbes.\n");
+	printf("Exécutez 'python3 generer_graphiques.py' pour visualiser les courbes.\n");
 	
 	return 0;
 }
