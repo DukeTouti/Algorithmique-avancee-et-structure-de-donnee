@@ -9,7 +9,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
 test_dijkstra.o: test_dijkstra.c dijkstra.h affichage.h
-	$(CC) $(CFLAGS) -c main.c
+	$(CC) $(CFLAGS) -c test_dijkstra.c
 
 dijkstra.o: dijkstra.c dijkstra.h affichage.h
 	$(CC) $(CFLAGS) -c dijkstra.c
