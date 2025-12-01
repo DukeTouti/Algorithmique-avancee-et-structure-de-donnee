@@ -1,14 +1,14 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11 -g
 TARGET = test_dijkstra
-OBJS = main.o dijkstra.o affichage.o
+OBJS = test_dijkstra.o dijkstra.o affichage.o
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-main.o: main.c dijkstra.h affichage.h
+test_dijkstra.o: test_dijkstra.c dijkstra.h affichage.h
 	$(CC) $(CFLAGS) -c main.c
 
 dijkstra.o: dijkstra.c dijkstra.h affichage.h
