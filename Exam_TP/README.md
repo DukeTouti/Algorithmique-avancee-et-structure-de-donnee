@@ -99,18 +99,18 @@ make clean && make && ./graphe_exam
 
 ## 📚 Liste des Algorithmes Disponibles
 
-| Algorithme | Type de Graphe | Utilisation |
-|-----------|---------------|-------------|
-| **BFS** | Non orienté | Parcours en largeur, distances |
-| **DFS** | Orienté/Non orienté | Parcours en profondeur |
-| **Tri Topologique** | Orienté acyclique (DAG) | Ordre linéaire des sommets |
-| **SCC (Kosaraju)** | Orienté | Composantes fortement connexes |
-| **Kruskal** | Non orienté pondéré | Arbre couvrant minimum |
-| **Prim** | Non orienté pondéré | Arbre couvrant minimum |
-| **Dijkstra** | Orienté pondéré (≥0) | Plus courts chemins (origine unique) |
-| **Bellman-Ford** | Orienté pondéré (avec négatifs) | Plus courts chemins + détection cycles |
-| **Floyd-Warshall** | Orienté pondéré | Plus courts chemins (toutes paires) |
-| **Coloration** | Non orienté | Nombre chromatique, coloration gloutonne |
+|      Algorithme     |          Type de Graphe         |               Utilisation                |
+|---------------------|---------------------------------|------------------------------------------|
+| **BFS**             | Non orienté                     | Parcours en largeur, distances           |
+| **DFS**             | Orienté/Non orienté             | Parcours en profondeur                   |
+| **Tri Topologique** | Orienté acyclique (DAG)         | Ordre linéaire des sommets               |
+| **SCC (Kosaraju)**  | Orienté                         | Composantes fortement connexes           |
+| **Kruskal**         | Non orienté pondéré             | Arbre couvrant minimum                   |
+| **Prim**            | Non orienté pondéré             | Arbre couvrant minimum                   |
+| **Dijkstra**        | Orienté pondéré (≥0)            | Plus courts chemins (origine unique)     |
+| **Bellman-Ford**    | Orienté pondéré (avec négatifs) | Plus courts chemins + détection cycles   |
+| **Floyd-Warshall**  | Orienté pondéré                 | Plus courts chemins (toutes paires)      |
+| **Coloration**      | Non orienté                     | Nombre chromatique, coloration gloutonne |
 
 ---
 
@@ -222,3 +222,5 @@ Préparé spécialement pour l'examen TP de graphes - Décembre 2025
 ---
 
 **Bon courage pour l'examen ! 🚀💪**
+
+HATHOUTI Mohammed Taha
