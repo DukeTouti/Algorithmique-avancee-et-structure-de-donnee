@@ -6,11 +6,11 @@
 // #define USE_BFS
 // #define USE_DFS
 // #define USE_TOPO
-// #define USE_SCC
+#define USE_SCC
 // #define USE_KRUSKAL
 // #define USE_PRIM
 // #define USE_DIJKSTRA
-#define USE_BELLMAN_FORD
+// #define USE_BELLMAN_FORD
 // #define USE_FLOYD_WARSHALL
 // #define USE_COLORATION
 
@@ -143,7 +143,7 @@ int main() {
 	#endif
 	#endif
 
-	#if 1
+	#if 0
 	#ifdef USE_BELLMAN_FORD
 	Graphe* g = creerGraphe(7, 1);  // 5 sommets, orienté
 	// s=0, t=1, x=2, z=3, y=4
@@ -249,19 +249,24 @@ int main() {
 	
 	
 	// ===== ANNALE 6 : SCC (Composantes Fortement Connexes) =====
-	#if 0
+	#if 1
 	#ifdef USE_SCC
 	Graphe* g = creerGraphe(10, 1);  // 10 sommets, orienté
-	// s=0, q=1, f=2, y=3, r=4, v=5, w=6, z=7, x=8, u=9
-	ajouterArrete(g, 0, 1, 1);  // s -> q
-	ajouterArrete(g, 1, 2, 1);  // q -> f
-	ajouterArrete(g, 2, 3, 1);  // f -> y
-	ajouterArrete(g, 3, 4, 1);  // y -> r
-	ajouterArrete(g, 4, 9, 1);  // r -> u
-	ajouterArrete(g, 5, 6, 1);  // v -> w
-	ajouterArrete(g, 6, 0, 1);  // w -> s
-	ajouterArrete(g, 7, 8, 1);  // z -> x
-	ajouterArrete(g, 8, 2, 1);  // x -> f
+	// q=0, r=1, s=2, t=3, u=4, v=5, w=6, x=7, y=8, z=9
+	ajouterArrete(g, 0, 8, 1);  // q -> y
+	ajouterArrete(g, 2, 0, 1);  // s -> q
+	ajouterArrete(g, 2, 6, 1);  // s -> w
+	ajouterArrete(g, 3, 0, 1);  // t -> q
+	ajouterArrete(g, 4, 1, 1);  // u -> r
+	ajouterArrete(g, 5, 2, 1);  // v -> s
+	ajouterArrete(g, 6, 0, 1);  // w -> q
+	ajouterArrete(g, 6, 5, 1);  // w -> v
+	ajouterArrete(g, 7, 3, 1);  // x -> t
+	ajouterArrete(g, 7, 9, 1);  // x -> z
+	ajouterArrete(g, 8, 1, 1);  // y -> r
+	ajouterArrete(g, 8, 3, 1);  // y -> t
+	ajouterArrete(g, 8, 4, 1);  // y -> u
+	ajouterArrete(g, 9, 7, 1);  // z -> x
 	#endif
 	#endif
 	
